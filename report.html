@@ -483,10 +483,24 @@
   </main>
 
 <script>
+  const API_URL ="https://script.google.com/macros/s/AKfycbw8xG8l3QOA1RoYtq1nySop1XjFn1Fm2VmRCYCiZCdgHAkOMVsPSAAxZrkBu61EXxe6sQ/exec";
   const monthSelect = document.getElementById("month");
   const currentMonth = new Date().getMonth() + 1;
 
   monthSelect.value = currentMonth + "月";
+
+  fetch(API_URL)
+  .then(response => response.json())
+  .then(data => {
+    console.log("API 回傳：", data);
+
+    if (data.success) {
+      console.log("API 連線成功：", data.message);
+    }
+  })
+  .catch(error => {
+    console.error("API 連線失敗：", error);
+  });
 </script>
   
 </body>
