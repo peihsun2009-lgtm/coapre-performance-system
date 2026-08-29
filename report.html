@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>績效填報｜COAPRE 績效管理系統</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #F8F9FA;
+      color: #263A39;
+    }
+
+    /* 左側選單 */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      height: 100vh;
+      background: #FFFFFF;
+      border-right: 1px solid #DCE5E4;
+      padding: 28px 18px;
+    }
+
+    .brand {
+      margin-bottom: 36px;
+      padding: 0 12px;
+    }
+
+    .brand-title {
+      color: #30BAB3;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      margin-top: 6px;
+      color: #6F7D7C;
+      font-size: 13px;
+    }
+
+    .menu-item {
+      display: block;
+      padding: 13px 16px;
+      margin-bottom: 6px;
+      border-radius: 8px;
+      color: #263A39;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .menu-item:hover {
+      background: #F1F4F3;
+    }
+
+    .menu-item.active {
+      background: #E7F7F6;
+      color: #219691;
+      font-weight: 700;
+    }
+
+    /* 主要區域 */
+    .main {
+      margin-left: 240px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 72px;
+      background: #FFFFFF;
+      border-bottom: 1px solid #DCE5E4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #123B3A;
+    }
+
+    .topbar-user {
+      color: #6F7D7C;
+      font-size: 14px;
+    }
+
+    .content {
+      max-width: 1180px;
+      padding: 32px;
+    }
+
+    .page-title {
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: #123B3A;
+    }
+
+    .page-description {
+      margin: 0 0 28px;
+      color: #6F7D7C;
+    }
+
+    /* 卡片 */
+    .panel {
+      background: #FFFFFF;
+      border: 1px solid #DCE5E4;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .panel-title {
+      margin: 0 0 20px;
+      color: #123B3A;
+      font-size: 18px;
+    }
+
+    /* 表單 */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #344B4A;
+    }
+
+    .required {
+      color: #C4554D;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #CDD9D8;
+      border-radius: 7px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #263A39;
+      background: #FFFFFF;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #30BAB3;
+      box-shadow: 0 0 0 3px rgba(48, 186, 179, 0.12);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* KPI 資訊 */
+    .kpi-info {
+      background: #F3FAF9;
+      border: 1px solid #CDEBE9;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 20px;
+    }
+
+    .kpi-label {
+      color: #6F7D7C;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .kpi-value {
+      color: #123B3A;
+      font-weight: 700;
+    }
+
+    /* 進度 */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .progress-card {
+      background: #F8F9FA;
+      border-radius: 9px;
+      padding: 18px;
+    }
+
+    .progress-label {
+      color: #6F7D7C;
+      font-size: 13px;
+    }
+
+    .progress-value {
+      margin-top: 8px;
+      color: #123B3A;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* 按鈕 */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      border: none;
+      border-radius: 7px;
+      padding: 11px 20px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .button-secondary {
+      background: #FFFFFF;
+      color: #219691;
+      border: 1px solid #219691;
+    }
+
+    .button-primary {
+      background: #30BAB3;
+      color: #FFFFFF;
+    }
+
+    .button-primary:hover {
+      background: #43C6BF;
+    }
+
+    @media (max-width: 900px) {
+      .form-grid,
+      .progress-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-title">COAPRE</div>
+      <div class="brand-subtitle">績效管理系統</div>
+    </div>
+
+    <nav>
+      <a class="menu-item" href="index.html">首頁儀表板</a>
+      <a class="menu-item" href="#">工作績效</a>
+      <a class="menu-item active" href="report.html">績效填報</a>
+      <a class="menu-item" href="#">月報管理</a>
+      <a class="menu-item" href="#">人員管理</a>
+      <a class="menu-item" href="#">系統設定</a>
+    </nav>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+        COAPRE 績效管理系統
+      </div>
+
+      <div class="topbar-user">
+        民國115年度
+      </div>
+
+    </header>
+
+    <div class="content">
+
+      <h1 class="page-title">績效填報</h1>
+
+      <p class="page-description">
+        填寫每月工作執行情形及 KPI 成果
+      </p>
+
+      <section class="panel">
+
+        <h2 class="panel-title">填報基本資料</h2>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>
+              回報年度 <span class="required">*</span>
+            </label>
+
+            <select>
+              <option>民國115年</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              回報月份 <span class="required">*</span>
+            </label>
+
+            <select>
+              <option>請選擇月份</option>
+              <option>1月</option>
+              <option>2月</option>
+              <option>3月</option>
+              <option>4月</option>
+              <option>5月</option>
+              <option>6月</option>
+              <option>7月</option>
+              <option>8月</option>
+              <option>9月</option>
+              <option>10月</option>
+              <option>11月</option>
+              <option>12月</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              負責人 <span class="required">*</span>
+            </label>
+
+            <select>
+              <option>請選擇負責人</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              工作項目 <span class="required">*</span>
+            </label>
+
+            <select>
+              <option>請先選擇負責人</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="kpi-info">
+
+          <div class="kpi-label">
+            年度 KPI
+          </div>
+
+          <div class="kpi-value">
+            選擇工作項目後，自動顯示年度 KPI
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <h2 class="panel-title">本月成果</h2>
+
+        <div class="progress-grid">
+
+          <div class="progress-card">
+            <div class="progress-label">前期累積量</div>
+            <div class="progress-value">—</div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-label">本月完成量</div>
+            <div class="progress-value">—</div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-label">KPI 完成率</div>
+            <div class="progress-value">—</div>
+          </div>
+
+        </div>
+
+        <div class="form-grid" style="margin-top: 22px;">
+
+          <div class="form-group">
+            <label>
+              本月完成量／完成率 <span class="required">*</span>
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              placeholder="請輸入本月完成量"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>
+              業務簽呈決行日期
+            </label>
+
+            <input type="date">
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <h2 class="panel-title">執行情形說明</h2>
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label>
+              執行成效摘要 <span class="required">*</span>
+            </label>
+
+            <textarea
+              placeholder="請說明本月主要工作成果及目前執行情形"
+            ></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label>未達成績效原因</label>
+
+            <textarea
+              placeholder="如未達預期進度，請說明原因"
+            ></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label>精進（改善）措施</label>
+
+            <textarea
+              placeholder="請說明後續改善或精進措施"
+            ></textarea>
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="button button-secondary">
+            儲存草稿
+          </button>
+
+          <button class="button button-primary">
+            完成填報
+          </button>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
