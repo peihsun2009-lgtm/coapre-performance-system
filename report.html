@@ -350,7 +350,7 @@
               負責人 <span class="required">*</span>
             </label>
 
-            <select>
+            <select id="personSelect">
               <option>請選擇負責人</option>
             </select>
           </div>
@@ -489,17 +489,31 @@
 
   monthSelect.value = currentMonth + "月";
 
-  fetch(API_URL)
+const personSelect = document.getElementById("personSelect");
+
+fetch(API_URL + "?action=people")
   .then(response => response.json())
   .then(data => {
-    console.log("API 回傳：", data);
+    console.log("人員 API 回傳：", data);
 
-    if (data.success) {
-      console.log("API 連線成功：", data.message);
+    if (!data.success) {
+      throw new Error(data.message || "讀取人員名單失敗");
     }
+
+    personSelect.innerHTML = '<option value="">請選擇負責人</option>';
+
+    data.people.forEach(person => {
+      const option = document.createElement("option");
+      option.value = person.name;
+      option.textContent = person.name;
+      personSelect.appendChild(option);
+    });
   })
   .catch(error => {
-    console.error("API 連線失敗：", error);
+    console.error("人員名單讀取失敗：", error);
+
+    personSelect.innerHTML =
+      '<option value="">人員名單載入失敗</option>';
   });
 </script>
   
