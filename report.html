@@ -483,38 +483,13 @@
   </main>
 
 <script>
-  const API_URL ="https://script.google.com/macros/s/AKfycbw8xG8l3QOA1RoYtq1nySop1XjFn1Fm2VmRCYCiZCdgHAkOMVsPSAAxZrkBu61EXxe6sQ/exec";
+  
   const monthSelect = document.getElementById("month");
   const currentMonth = new Date().getMonth() + 1;
 
   monthSelect.value = currentMonth + "月";
 
-const personSelect = document.getElementById("personSelect");
 
-fetch(API_URL + "?action=people")
-  .then(response => response.json())
-  .then(data => {
-    console.log("人員 API 回傳：", data);
-
-    if (!data.success) {
-      throw new Error(data.message || "讀取人員名單失敗");
-    }
-
-    personSelect.innerHTML = '<option value="">請選擇負責人</option>';
-
-    data.people.forEach(person => {
-      const option = document.createElement("option");
-      option.value = person.name;
-      option.textContent = person.name;
-      personSelect.appendChild(option);
-    });
-  })
-  .catch(error => {
-    console.error("人員名單讀取失敗：", error);
-
-    personSelect.innerHTML =
-      '<option value="">人員名單載入失敗</option>';
-  });
 </script>
   
 </body>
