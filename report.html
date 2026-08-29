@@ -328,7 +328,7 @@
               回報月份 <span class="required">*</span>
             </label>
 
-            <select>
+            <select id="month">
               <option>請選擇月份</option>
               <option>1月</option>
               <option>2月</option>
@@ -482,5 +482,12 @@
 
   </main>
 
+<script>
+  const monthSelect = document.getElementById("month");
+  const currentMonth = new Date().getMonth() + 1;
+
+  monthSelect.value = currentMonth + "月";
+</script>
+  
 </body>
 </html>
